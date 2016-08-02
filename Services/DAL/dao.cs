@@ -8,14 +8,12 @@ using System.Data;
 namespace abstractFactoryCSharp.DAL
 {
     public class dao: IDisposable
-
     {
-     
         private string _connString = "Data Source=DESKTOP-7U7FVAB\\SQLEXPRESS;Initial Catalog = Northwind; Integrated Security = True; Connect Timeout = 30; Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private SqlConnection _myConnection;
         private SqlCommand _cmd;
-       
 
+        #region "Public Methods"
         public DataSet ExecuteGet(string _storedProcedureName, Dictionary<string,object> _parameters )
         {
             DataSet ds = new DataSet();
@@ -26,12 +24,10 @@ namespace abstractFactoryCSharp.DAL
             SqlDataAdapter sqlDr = new SqlDataAdapter(_storedProcedureName, _myConnection);
             sqlDr.SelectCommand.CommandType = CommandType.StoredProcedure;
             sqlDr.SelectCommand.CommandTimeout = 900;
+
             foreach (var item in _parameters)
             {
-                SqlParameter parm = new SqlParameter();
-                parm.ParameterName = item.Key;
-                parm.Value = item.Value;
-                sqlDr.SelectCommand.Parameters.Add(parm);
+                sqlDr.SelectCommand.Parameters.Add(SetParameter(item.Key, item.Value));
             }
 
             sqlDr.Fill(ds, "Employees");
@@ -52,14 +48,22 @@ namespace abstractFactoryCSharp.DAL
 
             foreach (var item in _parameters)
             {
-                SqlParameter parm = new SqlParameter();
-                parm.ParameterName = item.Key;
-                parm.Value = item.Value;
-                _cmd.Parameters.Add(parm);
+               _cmd.Parameters.Add(SetParameter(item.Key,item.Value));
             }
             _cmd.ExecuteNonQuery();
             return true;
         }
+        #region
+
+        #region "Private Methods"
+        private SqlParameter SetParameter (string key, object value)
+        {
+            SqlParameter parm = new SqlParameter();
+            parm.ParameterName = key;
+            parm.Value = value;
+            return parm;
+        }
+        #region
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
@@ -70,36 +74,20 @@ namespace abstractFactoryCSharp.DAL
             {
                 if (disposing)
                 {
-
                     _myConnection.Dispose();
                     _cmd.Dispose();
-                    // TODO: dispose managed state (managed objects).
                 }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
 
                 disposedValue = true;
             }
         }
 
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~dao() {
-        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //   Dispose(false);
-        // }
-
         // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
         }
         #endregion
-
-
     }
 }
 

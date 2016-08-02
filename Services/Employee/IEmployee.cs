@@ -27,40 +27,6 @@ namespace abstractFactoryCSharp.Employee
        string ReportsTo { get; set;}
        string PhotoPath { get; set;}
        decimal Salary { get; set; }
-        int Age { get; set; }
+       int Age { get; set; }
     }
 }
-
-//Public Property name As String
-//      Get
-//            Return _name
-//        End Get
-//        Set(value As String)
-//            _name = value
-//        End Set
-//    End Property
-
-//    Public Property title As String
-//        Get
-//            Return _title
-//        End Get
-//        Set(value As String)
-//            _title = value
-//        End Set
-//    End Property
-//    Public Property salary As Decimal
-//        Get
-//            Return _salary
-//        End Get
-//        Set(value As Decimal)
-//            _salary = value
-//        End Set
-//    End Property
-//    Public Property age As Integer
-//        Get
-//            Return _age
-//        End Get
-//        Set(value As Integer)
-//            _age = value
-//        End Set
-//    End Property
